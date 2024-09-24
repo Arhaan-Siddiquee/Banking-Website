@@ -2,13 +2,11 @@
 
 const nav = document.querySelector('.nav');
 
-// Modal
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
-// Features (content)
 showModal();
 learnMoreBtn();
 tabbedComponent();
@@ -17,9 +15,6 @@ stickyNavbar();
 fluidSections();
 lazyImgs();
 slider();
-
-///////////////////////////////////////
-// Modal window
 
 function showModal() {
   const openModal = function () {
@@ -42,8 +37,6 @@ function showModal() {
   });
 }
 
-///////////////////////////////////////
-// Smooth Scrolling (on clicking <a>)
 
 function learnMoreBtn() {
   document
@@ -54,34 +47,23 @@ function learnMoreBtn() {
     });
 }
 
-///////////////////////////////////////
-// Tabbed Component (OPERATION)
 
 function tabbedComponent() {
   document
     .querySelector('.operations__tab-container')
     .addEventListener('click', function (e) {
-      /* This won't work if we click on number (span).
-		const tab = e.target;
-
-		.closest(.operations__tab) -> always gives the tab even when child elements are clicked or the element itself , and null if we click the parent of the element */
       const tab = e.target.closest('.operations__tab');
 
-      /* Guard class; if tab === null func will terminated.
-		It'll avoid extra block eg: if (tab) { } */
       if (!tab) return;
 
       const activeTab = 'operations__tab--active';
       const activeContent = 'operations__content--active';
 
-      // Removing active classes from tab and content
       document.querySelector(`.${activeTab}`).classList.remove(activeTab);
       document
         .querySelector(`.${activeContent}`)
         .classList.remove(activeContent);
 
-      // Making new tab and content active
-      // const id = tab.dataset.tab;
       const id = tab.getAttribute('data-tab');
 
       document
@@ -94,52 +76,34 @@ function tabbedComponent() {
     });
 }
 
-///////////////////////////////////////
-// Menu Fade Animation
 
-/* 
-mouseenter -> Doesn't triggred by child element (no bubbling)
-mouseleave -> opposite
-
-mouseover -> Triggered by child elements (bubble)
-mouseout -> opposite
-*/
 
 function animateNavbar() {
   const hoverNav = function (e) {
     const link = e.target;
 
     if (link.classList.contains('nav__link')) {
-      // ThIS = e.currentTarget -> el on which event handler is added (nav)
-      // Logo
+
       nav.querySelector('.nav__logo').style.opacity = this;
 
-      // All Nav Link
       nav.querySelectorAll('.nav__link').forEach(l => (l.style.opacity = this));
 
-      // Targetter Nav Link
       link.style.opacity = '1';
     }
   };
 
-  // Bind new function defining where THIS to point
   nav.addEventListener('mouseover', hoverNav.bind(0.5));
   nav.addEventListener('mouseout', hoverNav.bind(1));
 
-  // nav.addEventListener('mouseover', (e) => hoverNav(e, '.5'));
-  // nav.addEventListener('mouseout', (e) => hoverNav(e, '1'));
+  nav.addEventListener('mouseover', (e) => hoverNav(e, '.5'));
+  nav.addEventListener('mouseout', (e) => hoverNav(e, '1'));
 }
-
-///////////////////////////////////////
-// STICK NAVBAR - by IntersectionObserver API
-
-/* window.pageYOffset === window.scrollY */
 
 function stickyNavbar() {
   const header = document.querySelector('.header');
 
   const stickyNav = enteries => {
-    const [entry] = enteries; // enteries[0] -> only 1 threshold value
+    const [entry] = enteries;
 
     if (entry.isIntersecting) {
       nav.classList.remove('sticky');
@@ -148,18 +112,15 @@ function stickyNavbar() {
     }
   };
 
-  // Will call the callback each time intersection happens
   const observer = new IntersectionObserver(stickyNav, {
     root: null, // viewport
     rootMargin: `-${nav.clientHeight}px`,
-    threshold: 0, //as soon as visible / invisible
+    threshold: 0, 
   });
 
   observer.observe(header);
 }
 
-///////////////////////////////////////
-// Reveal Section - FAV
 
 function fluidSections() {
   const revealSection = enteries => {
@@ -185,11 +146,8 @@ function fluidSections() {
   });
 }
 
-///////////////////////////////////////
-// lazy Image - FAV
 
 function lazyImgs() {
-  // Function of OBSERVER API
   const loadImg = enteries => {
     const [entry] = enteries;
 
@@ -197,7 +155,6 @@ function lazyImgs() {
 
     entry.target.src = entry.target.getAttribute('data-src');
 
-    // remove blur only when enlarged img is loaded
     entry.target.addEventListener('load', function () {
       this.classList.remove('lazy-img');
     });
@@ -208,15 +165,11 @@ function lazyImgs() {
   const imgObserver = new IntersectionObserver(loadImg, {
     root: null,
     threshold: 0.5,
-    // rootMargin: '200px',
   });
 
   const secImgs = document.querySelectorAll('img[data-src]');
   secImgs.forEach(img => imgObserver.observe(img));
 }
-
-///////////////////////////////////////
-// Carousel / Slider
 
 function slider() {
   const slides = document.querySelectorAll('.slide ');
