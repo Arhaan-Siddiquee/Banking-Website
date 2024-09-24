@@ -226,7 +226,6 @@ function slider() {
   const totalSlides = slides.length - 1;
   let currentSlide = 0;
 
-  // createDots
   (function () {
     slides.forEach((_, i) => {
       dotContainer.insertAdjacentHTML(
@@ -251,13 +250,11 @@ function slider() {
     activateDot(slide);
   };
   gotoSlide(currentSlide);
-  // 0% 100% 200% ....
 
   const nextSlide = () => {
     if (currentSlide === totalSlides) currentSlide = 0;
     else currentSlide++;
     gotoSlide(currentSlide);
-    // -100% 0% 100%....
   };
 
   const prevSlide = () => {
@@ -266,26 +263,19 @@ function slider() {
     gotoSlide(currentSlide);
   };
 
-  // NEXT
   sliderBtnRight.addEventListener('click', nextSlide);
-  // PREV
   sliderBtnLeft.addEventListener('click', prevSlide);
 
-  // Keyboard Controls
   document.addEventListener('keydown', e => {
-    // True && Will Run ... True (run) || (default if false)
     e.key === 'ArrowLeft' && prevSlide(currentSlide);
     e.key === 'ArrowRight' && nextSlide(currentSlide);
   });
 
-  // Dot Controls
   dotContainer.addEventListener('click', e => {
     const dot = e.target;
     if (!dot.classList.contains('dots__dot')) return;
-    // gotoSlide(dot.getAttribute('data-slide'));
     gotoSlide(dot.dataset.slide);
   });
 
-  // Slide after 5s
   setInterval(nextSlide, 5000);
 }
